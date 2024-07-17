@@ -10,7 +10,7 @@ namespace EurekaHelper.System
     public class ZoneManager
     {
         private delegate nint InitZoneDelegate(nint a1, int a2, nint a3);
-        private readonly DtrBarEntry _dtrBarEntry;
+        private readonly IDtrBarEntry _dtrBarEntry;
 
         public ZoneManager() 
         {
@@ -86,7 +86,7 @@ namespace EurekaHelper.System
         public void Dispose()
         {
             InitZoneHook?.Dispose();
-            _dtrBarEntry?.Dispose();
+            _dtrBarEntry?.Remove();
         }
     }
 }

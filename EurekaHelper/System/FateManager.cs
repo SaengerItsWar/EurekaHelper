@@ -15,7 +15,7 @@ namespace EurekaHelper.System
     public class FateManager : IDisposable
     {
         private readonly EurekaHelper _plugin = null!;
-        private List<Fate> lastFates = new();
+        private List<IFate> lastFates = new();
         private IEurekaTracker EurekaTracker;
 
         public FateManager(EurekaHelper plugin)
@@ -51,7 +51,7 @@ namespace EurekaHelper.System
         {
             if (EurekaHelper.Config.DisplayFateProgress)
             {
-                List<Fate> instanceFates = DalamudApi.FateTable.Where(x => !Utils.IsBunnyFate(x.FateId)).ToList();
+                var instanceFates = DalamudApi.FateTable.Where(x => !Utils.IsBunnyFate(x.FateId)).ToList();
                 foreach (var fate in instanceFates)
                 {
                     EurekaFate eurekaFate = EurekaTracker.GetFates().SingleOrDefault(i => fate.FateId == i.FateId);
@@ -77,8 +77,8 @@ namespace EurekaHelper.System
             if (DalamudApi.FateTable.SequenceEqual(lastFates))
                 return;
 
-            List<Fate> currFates = DalamudApi.FateTable.Except(lastFates).ToList();
-            List<EurekaFate> newFates = EurekaTracker.GetFates().Where(i => currFates.Select(i => i.FateId).Contains(i.FateId)).ToList();
+            var currFates = DalamudApi.FateTable.Except(lastFates).ToList();
+            var newFates = EurekaTracker.GetFates().Where(i => currFates.Select(i => i.FateId).Contains(i.FateId)).ToList();
 
             foreach (var fate in newFates)
                 DisplayFatePop(fate);

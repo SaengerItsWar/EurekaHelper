@@ -17,7 +17,6 @@ using Lumina.Data.Parsing.Layer;
 using Lumina.Excel.GeneratedSheets;
 using Lumina.Data.Files;
 using Dalamud.Utility;
-using Dalamud.Logging;
 
 namespace EurekaHelper
 {
@@ -353,8 +352,8 @@ namespace EurekaHelper
 
         public static void SendMessage(string message)
         {
-            var sanitized = DalamudApi.XivCommonBase.Functions.Chat.SanitiseText(message);
-            DalamudApi.XivCommonBase.Functions.Chat.SendMessage(sanitized);
+            var sanitized = ECommons.Automation.Chat.Instance.SanitiseText(message);
+            ECommons.Automation.Chat.Instance.SendMessage(sanitized);
         }
 
         public static int DatacenterToEurekaDatacenterId(string datacenterName) => Constants.DatacenterToEurekaDataCenterId.FirstOrDefault(x => x.Value == datacenterName).Key;

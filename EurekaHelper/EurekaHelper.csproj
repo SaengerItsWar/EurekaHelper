@@ -7,7 +7,7 @@
 	</PropertyGroup>
 	
     <PropertyGroup>
-        <TargetFramework>net7.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
 		<Platforms>x64</Platforms>
 		<NoWarn>CA1416</NoWarn>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
@@ -35,8 +35,11 @@
 	</Target>
 
 	<ItemGroup>
-		<PackageReference Include="DalamudPackager" Version="2.1.12" />
-		<PackageReference Include="XivCommon" Version="9.0.0" />
+		<ProjectReference Include="..\ECommons\ECommons\ECommons.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="DalamudPackager" Version="2.1.13" />
 		<Reference Include="FFXIVClientStructs">
 			<HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
 			<Private>false</Private>

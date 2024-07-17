@@ -31,7 +31,7 @@ namespace EurekaHelper
         internal readonly InventoryManager InventoryManager;
         internal readonly AlarmManager AlarmManager;
 
-        public EurekaHelper(DalamudPluginInterface pluginInterface)
+        public EurekaHelper(IDalamudPluginInterface pluginInterface)
         {
             Plugin = this;
 
