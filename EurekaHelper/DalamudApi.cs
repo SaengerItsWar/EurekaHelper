@@ -10,7 +10,6 @@ using Dalamud.IoC;
 using Dalamud.Logging;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
-using ECommons;
 
 // From: https://github.com/UnknownX7
 
@@ -102,7 +101,6 @@ namespace Dalamud
             }
 
             pluginCommandManager ??= new(plugin);
-            ECommonsMain.Init(pluginInterface, plugin);
         }
 
         public static DalamudApi operator +(DalamudApi container, object o)
@@ -177,7 +175,6 @@ namespace Dalamud
         public void Dispose()
         {
             RemoveCommandHandlers();
-            ECommonsMain.Dispose();
             GC.SuppressFinalize(this);
         }
     }
