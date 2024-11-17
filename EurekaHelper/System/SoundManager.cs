@@ -1,5 +1,4 @@
-﻿using Dalamud.Utility.Signatures;
-using System;
+﻿using FFXIVClientStructs.FFXIV.Client.UI;
 
 namespace EurekaHelper.System
 {
@@ -24,26 +23,13 @@ namespace EurekaHelper.System
         SoundEffect52 = 0x34
     }
 
-    internal unsafe class GameSound
-    {
-        [Signature("E8 ?? ?? ?? ?? 4D 39 BE ?? ?? ?? ??")]
-        public readonly delegate* unmanaged<uint, IntPtr, IntPtr, byte, void> PlaySoundEffect = null;
-
-        public GameSound()
-        {
-            DalamudApi.GameInteropProvider.InitializeFromAttributes(this);
-        }
-    }
-
     public static class SoundManager
     {
-        private static readonly GameSound GameSound = new();
-
         public static void PlaySoundEffect(SoundEffect soundEffect)
         {
             unsafe
             {
-                GameSound.PlaySoundEffect((uint)soundEffect, IntPtr.Zero, IntPtr.Zero, 0);
+                UIModule.PlaySound((uint)soundEffect);
             }
         }
     }

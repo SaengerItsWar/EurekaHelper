@@ -10,7 +10,7 @@ namespace EurekaHelper.System
     public class ZoneManager
     {
         private delegate nint InitZoneDelegate(nint a1, int a2, nint a3);
-        private readonly DtrBarEntry _dtrBarEntry;
+        private readonly IDtrBarEntry _dtrBarEntry;
 
         public ZoneManager() 
         {
@@ -41,7 +41,7 @@ namespace EurekaHelper.System
             }
         }
 
-        [Signature("E8 ?? ?? ?? ?? 45 33 C0 48 8D 53 10 8B CE E8 ?? ?? ?? ?? 48 8D 4B 64", DetourName = nameof(InitZoneDetour))]
+        [Signature("E8 ?? ?? ?? ?? 45 33 C0 48 8D 53 ?? 8B CE E8 ?? ?? ?? ?? 48 8D 4B", DetourName = nameof(InitZoneDetour))]
         private readonly Hook<InitZoneDelegate> InitZoneHook = null!;
 
         private nint InitZoneDetour(nint a1, int a2, nint a3)
@@ -86,7 +86,7 @@ namespace EurekaHelper.System
         public void Dispose()
         {
             InitZoneHook?.Dispose();
-            _dtrBarEntry?.Dispose();
+            _dtrBarEntry?.Remove();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace EurekaHelper
         internal readonly InventoryManager InventoryManager;
         internal readonly AlarmManager AlarmManager;
 
-        public EurekaHelper(DalamudPluginInterface pluginInterface)
+        public EurekaHelper(IDalamudPluginInterface pluginInterface)
         {
             Plugin = this;
 
@@ -106,7 +106,7 @@ namespace EurekaHelper
         {
             var connectionManager = await EurekaConnectionManager.Connect();
 
-            var datacenterId = Utils.DatacenterToEurekaDatacenterId(DalamudApi.ClientState.LocalPlayer.CurrentWorld.GameData.DataCenter.Value.Name.RawString);
+            var datacenterId = Utils.DatacenterToEurekaDatacenterId(DalamudApi.ClientState.LocalPlayer.CurrentWorld.Value.DataCenter.Value.Name.ToString());
             if (datacenterId == 0)
             {
                 PrintMessage("This datacenter is not supported currently. Please submit an issue if you think this is incorrect.");

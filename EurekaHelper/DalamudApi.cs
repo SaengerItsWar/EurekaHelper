@@ -10,7 +10,6 @@ using Dalamud.IoC;
 using Dalamud.Logging;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
-using XivCommon;
 
 // From: https://github.com/UnknownX7
 
@@ -19,91 +18,66 @@ namespace Dalamud
     public class DalamudApi
     {
         [PluginService]
-        //[RequiredVersion("1.0")]
-        public static DalamudPluginInterface PluginInterface { get; private set; }
+        public static IDalamudPluginInterface PluginInterface { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IBuddyList BuddyList { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IChatGui ChatGui { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IClientState ClientState { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static ICommandManager CommandManager { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static ICondition Condition { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IDataManager DataManager { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IFateTable FateTable { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IFlyTextGui FlyTextGui { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IFramework Framework { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IGameGui GameGui { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IGameNetwork GameNetwork { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IJobGauges JobGauges { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IKeyState KeyState { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
-        public static ILibcFunction LibcFunction { get; private set; }
-
-        [PluginService]
-        //[RequiredVersion("1.0")]
         public static IObjectTable ObjectTable { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IPartyFinderGui PartyFinderGui { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IPartyList PartyList { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static ISigScanner SigScanner { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static ITargetManager TargetManager { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IToastGui ToastGui { get; private set; }
 
         [PluginService]
-        //[RequiredVersion("1.0")]
         public static IDtrBar DtrBar { get; private set; }
 
         [PluginService]
@@ -111,16 +85,14 @@ namespace Dalamud
 
         [PluginService]
         public static IPluginLog Log { get; private set; }
-
-        public static XivCommonBase XivCommonBase { get; private set; }
-
+        
         private static PluginCommandManager<IDalamudPlugin> pluginCommandManager;
 
         public DalamudApi() { }
 
         public DalamudApi(IDalamudPlugin plugin) => pluginCommandManager ??= new(plugin);
 
-        public DalamudApi(IDalamudPlugin plugin, DalamudPluginInterface pluginInterface)
+        public DalamudApi(IDalamudPlugin plugin, IDalamudPluginInterface pluginInterface)
         {
             if (!pluginInterface.Inject(this))
             {
@@ -129,7 +101,6 @@ namespace Dalamud
             }
 
             pluginCommandManager ??= new(plugin);
-            XivCommonBase = new XivCommonBase(pluginInterface);
         }
 
         public static DalamudApi operator +(DalamudApi container, object o)
@@ -144,7 +115,7 @@ namespace Dalamud
             throw new InvalidOperationException();
         }
 
-        public static void Initialize(IDalamudPlugin plugin, DalamudPluginInterface pluginInterface) => _ = new DalamudApi(plugin, pluginInterface);
+        public static void Initialize(IDalamudPlugin plugin, IDalamudPluginInterface pluginInterface) => _ = new DalamudApi(plugin, pluginInterface);
 
         public static void Dispose() => pluginCommandManager?.Dispose();
     }
@@ -180,7 +151,7 @@ namespace Dalamud
 
         private IEnumerable<(string, CommandInfo)> GetCommandInfoTuple(MethodInfo method)
         {
-            var handlerDelegate = (CommandInfo.HandlerDelegate)Delegate.CreateDelegate(typeof(CommandInfo.HandlerDelegate), plugin, method);
+            var handlerDelegate = (IReadOnlyCommandInfo.HandlerDelegate)Delegate.CreateDelegate(typeof(IReadOnlyCommandInfo.HandlerDelegate), plugin, method);
 
             var command = handlerDelegate.Method.GetCustomAttribute<CommandAttribute>();
             var aliases = handlerDelegate.Method.GetCustomAttribute<AliasesAttribute>();
@@ -204,7 +175,6 @@ namespace Dalamud
         public void Dispose()
         {
             RemoveCommandHandlers();
-            DalamudApi.XivCommonBase.Dispose();
             GC.SuppressFinalize(this);
         }
     }

@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Authors>Snowy</Authors>
-		<Version>1.5.2.0</Version>
+		<Version>1.6.0.0</Version>
 		<Description>A plugin to enchance your Eureka experience</Description>
 		<PackageProjectUrl>https://github.com/snorux</PackageProjectUrl>
 	</PropertyGroup>
 	
     <PropertyGroup>
-        <TargetFramework>net7.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
 		<Platforms>x64</Platforms>
 		<NoWarn>CA1416</NoWarn>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
@@ -35,8 +35,7 @@
 	</Target>
 
 	<ItemGroup>
-		<PackageReference Include="DalamudPackager" Version="2.1.12" />
-		<PackageReference Include="XivCommon" Version="9.0.0" />
+		<PackageReference Include="DalamudPackager" Version="11.0.0" />
 		<Reference Include="FFXIVClientStructs">
 			<HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
 			<Private>false</Private>

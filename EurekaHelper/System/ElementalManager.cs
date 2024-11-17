@@ -46,12 +46,12 @@ namespace EurekaHelper.System
             if (!EurekaHelper.Config.ElementalCrowdsource && !EurekaHelper.Config.DisplayElemental && !EurekaHelper.Config.DisplayElementalToast)
                 return;
 
-            var elementals = DalamudApi.ObjectTable.Where(x => x is BattleNpc bnpc && Constants.EurekaElementals.Contains(bnpc.NameId));
+            var elementals = DalamudApi.ObjectTable.Where(x => x is IBattleNpc bnpc && Constants.EurekaElementals.Contains(bnpc.NameId));
             foreach (var elemental in elementals)
             {
-                if (Elementals.Exists(x => x.ObjectId == elemental.ObjectId))
+                if (Elementals.Exists(x => x.ObjectId == elemental.EntityId))
                 {
-                    var match = Elementals.FirstOrDefault(x => x.ObjectId == elemental.ObjectId);
+                    var match = Elementals.FirstOrDefault(x => x.ObjectId == elemental.EntityId);
                     if (match == null)
                         continue;
 
@@ -60,7 +60,7 @@ namespace EurekaHelper.System
                     continue;
                 }
 
-                var eurekaElemental = new EurekaElemental(elemental.Name.TextValue, DalamudApi.ClientState.TerritoryType, elemental.Position, elemental.ObjectId);
+                var eurekaElemental = new EurekaElemental(elemental.Name.TextValue, DalamudApi.ClientState.TerritoryType, elemental.Position, elemental.EntityId);
                 Elementals.Add(eurekaElemental);
                 Elementals.Sort((x, y) => x.LastSeen.CompareTo(y.LastSeen));
 
